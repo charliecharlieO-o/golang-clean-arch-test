@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	tmln "server/timeline"
 )
@@ -20,19 +19,22 @@ func main() {
 		}
 	}`
 
+	tservice := tmln.NewTimelineService()
+	controller := tservice.NewTimelineController()
+
 	// Loading the timeline into a Timeline struct and validating it
-	var story tmln.Timeline
-	err := json.Unmarshal([]byte(storyJSON), &story)
-	err = story.ValidateTimeline()
-	if err == nil {
-		fmt.Println("Valid Timeline :D")
+	timeline, _ := controller.BuildTimeline([]byte(storyJSON))
+	verr := controller.ValidateTimeline(timeline)
+
+	if verr != nil {
+		fmt.Println("Invalid timeline", timeline)
 	}
 
 	// MiniGame - Do this until we run out of possibilities
 	fmt.Println("Want to play?...")
 
 	// Get first premise
-	currentNode := story.Root
+	currentNode := timeline.Root
 	for currentNode != nil && len(currentNode.Outcomes) > 0 {
 		// Display Premise
 		fmt.Println(currentNode.Premise)
