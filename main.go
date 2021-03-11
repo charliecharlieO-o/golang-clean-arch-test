@@ -30,6 +30,9 @@ func main() {
 		fmt.Println("Invalid timeline", timeline)
 	}
 
+	// Save Timeline
+	controller.Save(timeline)
+
 	// MiniGame - Do this until we run out of possibilities
 	fmt.Println("Want to play?...")
 
