@@ -21,7 +21,10 @@ func (tp *timelinePresenter) TimelineError(t *entity.Timeline, e error) error {
 	if e == nil {
 		return nil
 	}
-	return errors.New(t.Name + " is not a valid timeline: " + e.Error())
+	if t != nil {
+		return errors.New(t.Name + " Timeline Error " + e.Error())
+	}
+	return errors.New("Timeline Error " + e.Error())
 }
 
 func (tp *timelinePresenter) TimelineResponse(t *entity.Timeline) *entity.Timeline {

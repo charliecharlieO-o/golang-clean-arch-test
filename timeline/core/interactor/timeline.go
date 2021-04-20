@@ -24,6 +24,8 @@ type timelineInteractor struct {
 type TimelineInteractor interface {
 	Validate(t *entity.Timeline) error
 	Save(t *entity.Timeline) (*entity.Timeline, error)
+	Delete(t *entity.Timeline) error
+	Get(id uint) (*entity.Timeline, error)
 }
 
 func NewTimelineInteractor(r repository.TimelineRepository, p presenter.TimelinePresenter) TimelineInteractor {
@@ -64,7 +66,23 @@ func (ti *timelineInteractor) Validate(t *entity.Timeline) error {
 func (ti *timelineInteractor) Save(t *entity.Timeline) (*entity.Timeline, error) {
 	saved, err := ti.TimelineRepository.Save(t)
 	if err != nil {
-		return nil, err
+		return nil, ti.TimelinePresenter.TimelineError(t, err)
 	}
 	return ti.TimelinePresenter.TimelineResponse(saved), nil
+}
+
+func (ti *timelineInteractor) Delete(t *entity.Timeline) error {
+	err := ti.TimelineRepository.Delete(t)
+	if err != nil {
+		return ti.TimelinePresenter.TimelineError(t, err)
+	}
+	return nil
+}
+
+func (ti *timelineInteractor) Get(id uint) (*entity.Timeline, error) {
+	timeline, err := ti.TimelineRepository.Get(id)
+	if err != nil {
+		return nil, ti.TimelinePresenter.TimelineError(nil, err)
+	}
+	return ti.TimelinePresenter.TimelineResponse(timeline), nil
 }
