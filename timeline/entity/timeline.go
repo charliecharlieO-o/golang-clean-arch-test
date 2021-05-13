@@ -5,5 +5,6 @@ type Timeline struct {
 	ID          uint
 	Name        string
 	Description string
+	Tags        []string
 	Root        *StoryNode
 }

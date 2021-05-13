@@ -26,7 +26,6 @@ type TimelineInteractor interface {
 	Save(t *entity.Timeline) (*entity.Timeline, error)
 	Delete(t *entity.Timeline) error
 	Get(t *entity.Timeline) (*entity.Timeline, error)
-	SearchByName(name string) ([]*entity.Timeline, error)
 }
 
 func NewTimelineInteractor(r repository.TimelineRepository, p presenter.TimelinePresenter) TimelineInteractor {
@@ -86,13 +85,4 @@ func (ti *timelineInteractor) Get(t *entity.Timeline) (*entity.Timeline, error) 
 		return nil, ti.TimelinePresenter.TimelineError(nil, err)
 	}
 	return ti.TimelinePresenter.TimelineResponse(timeline), nil
-}
-
-func (ti *timelineInteractor) SearchByName(name string) ([]*entity.Timeline, error) {
-	timelines, err := ti.TimelineRepository.SearchByName(name)
-	if err != nil {
-		return nil, ti.TimelinePresenter.TimelineError(nil, err)
-	}
-	// Change this
-	return ti.TimelinePresenter.TimelinesResponse(timelines), nil
 }

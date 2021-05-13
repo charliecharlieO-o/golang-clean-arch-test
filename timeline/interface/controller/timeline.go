@@ -15,7 +15,7 @@ type TimelineController interface {
 	BuildTimeline(data []byte) (*entity.Timeline, error)
 	Save(t *entity.Timeline) (*entity.Timeline, error)
 	Delete(t *entity.Timeline) error
-	Get(id uint) (*entity.Timeline, error)
+	Get(t *entity.Timeline) (*entity.Timeline, error)
 }
 
 func NewTimelineController(ti interactor.TimelineInteractor) TimelineController {
@@ -43,6 +43,6 @@ func (tc *timelineController) Delete(t *entity.Timeline) error {
 	return tc.timelineInteractor.Delete(t)
 }
 
-func (tc *timelineController) Get(id uint) (*entity.Timeline, error) {
-	return tc.timelineInteractor.Get(id)
+func (tc *timelineController) Get(t *entity.Timeline) (*entity.Timeline, error) {
+	return tc.timelineInteractor.Get(t)
 }

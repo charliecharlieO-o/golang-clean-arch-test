@@ -20,11 +20,11 @@ func TestValidateTimelineBuild(t *testing.T) {
 	service := timeline.NewTimelineService()
 	controller := service.NewTimelineController()
 
-	timeline, err := controller.BuildTimeline([]byte(story))
+	tl, err := controller.BuildTimeline([]byte(story))
 	if err != nil {
 		t.Errorf(`Timeline Build Failed: %q`, err)
 	}
-	err = controller.ValidateTimeline(timeline)
+	err = controller.ValidateTimeline(tl)
 	if err != nil {
 		t.Errorf(`Validation Failed: %q`, err)
 	}
@@ -41,11 +41,11 @@ func TestValidateTimelineNoTree(t *testing.T) {
 	service := timeline.NewTimelineService()
 	controller := service.NewTimelineController()
 
-	timeline, err := controller.BuildTimeline([]byte(story))
+	tl, err := controller.BuildTimeline([]byte(story))
 	if err != nil {
 		t.Errorf(`Timeline Build Failed: %q`, err)
 	}
-	err = controller.ValidateTimeline(timeline)
+	err = controller.ValidateTimeline(tl)
 	if err == nil {
 		t.Error("Invalid timeline passed validation")
 	}
@@ -68,12 +68,12 @@ func TestValidateTimelineSave(t *testing.T) {
 	}`
 	service := timeline.NewTimelineService()
 	controller := service.NewTimelineController()
-	timeline, err := controller.BuildTimeline([]byte(story))
+	tl, err := controller.BuildTimeline([]byte(story))
 	if err != nil {
 		t.Error("Invalid timeline")
 	}
-	timeline, err = controller.Save(timeline)
-	if timeline.ID != 1 || err != nil {
+	tl, err = controller.Save(tl)
+	if tl.ID != 1 || err != nil {
 		t.Error("Timeline was not saved correctly")
 	}
 }
@@ -92,15 +92,15 @@ func TestTimelineDelete(t *testing.T) {
 	}`
 	service := timeline.NewTimelineService()
 	controller := service.NewTimelineController()
-	timeline, err := controller.BuildTimeline([]byte(story))
+	tl, err := controller.BuildTimeline([]byte(story))
 	if err != nil {
 		t.Error("Invalid timeline")
 	}
-	timeline, err = controller.Save(timeline)
-	if timeline.ID != 1 || err != nil {
+	tl, err = controller.Save(tl)
+	if tl.ID != 1 || err != nil {
 		t.Error("Timeline was not saved correctly")
 	}
-	err = controller.Delete(timeline)
+	err = controller.Delete(tl)
 	if err != nil {
 		t.Errorf(`Timeline was not deleted: %q`, err)
 	}
@@ -120,16 +120,16 @@ func TestGetTimeline(t *testing.T) {
 	}`
 	service := timeline.NewTimelineService()
 	controller := service.NewTimelineController()
-	timeline, err := controller.BuildTimeline([]byte(story))
+	tl, err := controller.BuildTimeline([]byte(story))
 	if err != nil {
 		t.Error("Invalid timeline")
 	}
-	timeline, err = controller.Save(timeline)
-	if timeline.ID != 1 || err != nil {
+	tl, err = controller.Save(tl)
+	if tl.ID != 1 || err != nil {
 		t.Error("Timeline was not saved correctly")
 	}
-	timeline, err = controller.Get(timeline.ID)
-	if timeline == nil || err != nil {
+	tl, err = controller.Get(tl)
+	if tl == nil || err != nil {
 		t.Errorf(`Timeline was not found: %q`, err)
 	}
 }

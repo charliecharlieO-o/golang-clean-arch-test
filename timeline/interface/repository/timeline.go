@@ -7,20 +7,18 @@ import (
 
 type timelineRepository struct {
 	timelineIdx   uint
-	storynodeIdx  uint
 	TimelineTable map[uint]*entity.Timeline
 }
 
 type TimelineRepository interface {
 	Save(t *entity.Timeline) (*entity.Timeline, error)
 	Delete(t *entity.Timeline) error
-	Get(id uint) (*entity.Timeline, error)
+	Get(t *entity.Timeline) (*entity.Timeline, error)
 }
 
 func NewTimelineRepository() TimelineRepository {
 	return &timelineRepository{
 		timelineIdx:   0,
-		storynodeIdx:  0,
 		TimelineTable: make(map[uint]*entity.Timeline, 0),
 	}
 }
@@ -44,11 +42,11 @@ func (tr *timelineRepository) Delete(t *entity.Timeline) error {
 	return nil
 }
 
-func (tr *timelineRepository) Get(id uint) (*entity.Timeline, error) {
-	if id > tr.timelineIdx || id <= 0 {
+func (tr *timelineRepository) Get(t *entity.Timeline) (*entity.Timeline, error) {
+	if t.ID > tr.timelineIdx || t.ID <= 0 {
 		return nil, errors.New("Timeline doesn't exist")
 	}
-	timeline, _ := tr.TimelineTable[id]
+	timeline, _ := tr.TimelineTable[t.ID]
 	if timeline != nil {
 		return timeline, nil
 	}
