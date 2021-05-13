@@ -11,6 +11,7 @@ type timelinePresenter struct {
 type TimelinePresenter interface {
 	TimelineError(t *entity.Timeline, e error) error
 	TimelineResponse(t *entity.Timeline) *entity.Timeline
+	TimelinesResponse(t []*entity.Timeline) []*entity.Timeline
 }
 
 func NewTimelinePresenter() TimelinePresenter {
@@ -28,5 +29,9 @@ func (tp *timelinePresenter) TimelineError(t *entity.Timeline, e error) error {
 }
 
 func (tp *timelinePresenter) TimelineResponse(t *entity.Timeline) *entity.Timeline {
+	return t
+}
+
+func (tp *timelinePresenter) TimelinesResponse(t []*entity.Timeline) []*entity.Timeline {
 	return t
 }
