@@ -133,3 +133,38 @@ func TestGetTimeline(t *testing.T) {
 		t.Errorf(`Timeline was not found: %q`, err)
 	}
 }
+
+func TestSearchByTags(t *testing.T) {
+	// Create 2 story lines with intersecting tags
+	storyA := `{
+		"name": "A",
+		"description": "an example of a story",
+		"tags": ["a", "b", "c"],
+		"root": {
+			"premise": "Root Premise",
+			"outcomes": {
+				"A": {"premise": "Consequence A"},
+				"B": {"premise": "Consequence B"}
+			}
+		}
+	}`
+	storyB := `{
+		"name": "B",
+		"description": "an example of a story",
+		"tags": ["1", "2", "a"],
+		"root": {
+			"premise": "Root Premise",
+			"outcomes": {
+				"A": {"premise": "Consequence A"},
+				"B": {"premise": "Consequence B"}
+			}
+		}
+	}`
+	service := timeline.NewTimelineService()
+	controller := service.NewTimelineController()
+	tla, err := controller.BuildTimeline([]byte(storyA))
+	tlb, err := controller.BuildTimeline([]byte(storyB))
+	tla, err = controller.Save(tla)
+	tlb, err = controller.Save(tlb)
+	// Search by tags should return an array with both in it
+}
